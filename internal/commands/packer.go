@@ -7,9 +7,9 @@ import (
 )
 
 // Pack распаковывает строку
-func Pack(input string) string {
+func Pack(input string) (string, error) {
 	if len(input) == 0 {
-		return ""
+		return "", nil
 	}
 
 	var result string
@@ -20,7 +20,6 @@ func Pack(input string) string {
 		if runes[i] == runes[i-1] {
 			count++
 		} else {
-			// Append the previous character and its count (if greater than 1)
 			result += string(runes[i-1])
 			if count > 1 {
 				result += strconv.Itoa(count)
@@ -29,13 +28,12 @@ func Pack(input string) string {
 		}
 	}
 
-	// Append the last character and its count
 	result += string(runes[len(runes)-1])
 	if count > 1 {
 		result += strconv.Itoa(count)
 	}
 
-	return result
+	return result, nil
 }
 
 // Unpack распаковывает строку
@@ -80,8 +78,8 @@ func Unpack(input string) (string, error) {
 			} else {
 				result = append(result, char)
 			}
-		} else {
-			result = append(result, char)
+		} else if unicode.IsDigit(char) {
+			return "", fmt.Errorf("invalid number at position %d", i)
 		}
 	}
 

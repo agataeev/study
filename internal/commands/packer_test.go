@@ -112,8 +112,14 @@ func TestPack(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Pack(tt.args.input); got != tt.want {
-				t.Errorf("Pack() = %v, want %v", got, tt.want)
+			if got, err := Pack(tt.args.input); got != tt.want {
+				if (err != nil) != tt.wantErr {
+					t.Errorf("Pack() error = %v, wantErr %v", err, tt.wantErr)
+					return
+				}
+				if got != tt.want {
+					t.Errorf("Pack() got = %v, want %v", got, tt.want)
+				}
 			}
 		})
 	}
