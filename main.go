@@ -66,7 +66,7 @@ func main() {
 		return
 	}
 
-	if *mode == "daemon" && *mode == UnpackCommand {
+	if *mode == "daemon" {
 		daemonUnpackMode()
 		return
 	}
